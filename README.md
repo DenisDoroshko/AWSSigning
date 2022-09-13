@@ -1,4 +1,4 @@
-# AWSSigning
+# AWSSigning - Tool for simplifying setting app AWS session tokens and logging to AWS code artifact
 Example of credentials file(in C:\Users\USERNAME\.aws\):
 ```
 [def]
