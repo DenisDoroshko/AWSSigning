@@ -24,3 +24,10 @@ Example of appSettings.json:
   "AwsSessionTokenLine": 9
 }
 ```
+**How to get MFA arn?**
+
+Go to `Security credentials` tab in AWS configure MFA device(if not configured) and copy identifier:
+![image](https://user-images.githubusercontent.com/71182505/189976814-e00fc4dd-3b70-4425-ba2d-1eb1c514e94e.png)
+**How to get access keys?**
+
+Go to `Security credentials` tab and create them on `Access keys` tab and then paste them for [def] profile (`aws_access_key_id` and `aws_secret_access_key`)
