@@ -73,7 +73,7 @@ namespace AWSSigning
                 // add nuget source for axs codeartifact
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = @"powershell.exe";
-                startInfo.Arguments = @"& './add-axs-codeartifact-nuget-source.ps1'";
+                startInfo.Arguments = @"& './add-codeartifact-nuget-source.ps1'";
                 startInfo.RedirectStandardOutput = true;
                 startInfo.RedirectStandardError = true;
                 startInfo.UseShellExecute = false;
