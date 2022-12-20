@@ -13,6 +13,8 @@ aws_session_token = TEMPORARY_KEY_GENERATED_BY_TOOL
 toolkit_artifact_guid=1652de2a-fda1-499f-b974-126991707728
 region=us-west-2
 ```
+see template: [credentials template](https://github.com/DenisDoroshko/AWSSigning/blob/main/AWS_Signing/CredentialsTemplate)
+
 Example of appSettings.json:
 ```
 {
@@ -25,6 +27,9 @@ Example of appSettings.json:
   "AwsSessionTokenLine": 9
 }
 ```
+option **IsSetupCodeArtifactNugetSource** allows to sign in to AWS code artifact, to make it working need to configure `$domain` and  `$domainOwner` in [sign in Code Artifact script](https://github.com/DenisDoroshko/AWSSigning/blob/main/AWS_Signing/add-codeartifact-nuget-source.ps1)
+and run command `Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force` in PowerShell to allow scripts execution
+
 **How to get MFA arn?**
 
 Go to `Security credentials` tab in AWS configure MFA device(if not configured) and copy identifier:
