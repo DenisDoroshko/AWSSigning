@@ -10,6 +10,7 @@ toolkit_artifact_guid=1652de2a-fda1-499f-b974-126991707728
 aws_access_key_id = TEMPORARY_KEY_GENERATED_BY_TOOL
 aws_secret_access_key = TEMPORARY_KEY_GENERATED_BY_TOOL
 aws_session_token = TEMPORARY_KEY_GENERATED_BY_TOOL
+toolkit_artifact_guid=1652de2a-fda1-499f-b974-126991707728
 region=us-west-2
 ```
 Example of appSettings.json:

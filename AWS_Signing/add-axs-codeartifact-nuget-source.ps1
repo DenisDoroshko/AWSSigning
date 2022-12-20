@@ -1,8 +1,8 @@
-$domain = "axs"
-$domainOwner = "971217900852"
+$domain = "COMPANY"
+$domainOwner = "1234567"
 $region = "us-west-2"
 $source = "https://$domain-$domainOwner.d.codeartifact.$region.amazonaws.com/nuget/nuget/v3/index.json"
-$sourceName = "axs/nuget"
+$sourceName = "COMPANY/nuget"
 
 # get codeartifact nuget password
 $authToken = aws codeartifact get-authorization-token --domain $domain --domain-owner $domainOwner --query authorizationToken --output text
