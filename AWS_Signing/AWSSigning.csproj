@@ -10,6 +10,11 @@
 
   <ItemGroup>
     <None Remove="1_sqB3KdpJ4cBn-e9FoUB4Mw.ico" />
+    <None Remove="CredentialsTemplate" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="CredentialsTemplate" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,7 +35,7 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="add-axs-codeartifact-nuget-source.ps1">
+    <None Update="add-codeartifact-nuget-source.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
