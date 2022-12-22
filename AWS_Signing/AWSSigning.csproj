@@ -14,10 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="CredentialsTemplate" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="1_sqB3KdpJ4cBn-e9FoUB4Mw.ico" />
   </ItemGroup>
 
