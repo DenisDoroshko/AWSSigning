@@ -22,7 +22,7 @@ namespace AWSSigning
 
     public static class SignInManager
     {
-        public static bool SignIn(string token)
+        public static (bool Result, string ErrorMessage) SignIn(string token)
         {
             // setup AWS session token
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
@@ -33,12 +33,13 @@ namespace AWSSigning
             pProcess.StartInfo.Arguments = $"/C aws sts get-session-token --profile {appSettings.ConstantProfileName} --serial-number {appSettings.MfaArn} --token-code {token}";
             pProcess.StartInfo.UseShellExecute = false;
             pProcess.StartInfo.RedirectStandardOutput = true;
+            pProcess.StartInfo.RedirectStandardError = true;
             pProcess.Start();
             string strOutput = pProcess.StandardOutput.ReadToEnd();
             var aws = JsonConvert.DeserializeObject<AWS>(strOutput);
             if (aws is null)
             {
-                return false;
+                return (false, pProcess.StandardError.ReadToEnd());
             }
             var lines = File.ReadAllLines(appSettings.CredentialsPath);
             var accessKeyId = $"aws_access_key_id = {aws.Credentials.AccessKeyId}";
@@ -83,10 +84,10 @@ namespace AWSSigning
                 process.Start();
                 var errorOutput = process.StandardError.ReadToEnd();
 
-                return errorOutput.Length == 0;
+                return (errorOutput.Length == 0, errorOutput);
             }
 
-            return true;
+            return (true, null);
         }
     }
 }

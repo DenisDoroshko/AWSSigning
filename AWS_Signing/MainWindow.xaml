@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="AWS Sign" Height="192" Width="402" WindowStartupLocation="CenterScreen">
     <Grid Background="#FFE2DD2D">
-        <Button Name="signButton" Content="Sign in" HorizontalAlignment="Left" Margin="157,93,0,0" VerticalAlignment="Top" Width="120" Height="26" Click="signButton_Click"/>
+        <Button Name="signButton" IsDefault="True" Content="Sign in" HorizontalAlignment="Left" Margin="157,93,0,0" VerticalAlignment="Top" Width="120" Height="26" Click="signButton_Click"/>
         <TextBox Name="tokenBox" HorizontalAlignment="Left" Margin="157,50,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="23"/>
         <Label Content="Your mfa code" HorizontalAlignment="Left" Margin="56,50,0,0" VerticalAlignment="Top"/>
 
