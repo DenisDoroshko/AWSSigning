@@ -23,19 +23,20 @@ namespace AWSSigning
         public MainWindow()
         {
             InitializeComponent();
+            tokenBox.Focus();
         }
 
         private void signButton_Click(object sender, RoutedEventArgs e)
         {
             var token = tokenBox.Text;
             var result = SignInManager.SignIn(token);
-            if (result)
+            if (result.Result)
             {
                 MessageBox.Show("Signed!");
             }
             else
             {
-                MessageBox.Show("Something wrong.");
+                MessageBox.Show($"Something wrong. {result.ErrorMessage}");
             }
 
             tokenBox.Text = "";
