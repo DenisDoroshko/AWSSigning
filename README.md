@@ -51,4 +51,5 @@ options **Domain**, **DomainOwner**, **Region** store settings for code artifact
 ![image](https://github.com/DenisDoroshko/AWSSigning/assets/71182505/d1ff48e1-92aa-4199-bbe5-edf62b430cdf)
 
 option **NugetSourceName** stores name of nuget source that will be created to use for loading packages, for example in Visual Studio you will see your source in the list:
+
 ![image](https://github.com/DenisDoroshko/AWSSigning/assets/71182505/bb17093b-83d9-4a22-93bc-35ceae0b1185)
