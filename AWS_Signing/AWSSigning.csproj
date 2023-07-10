@@ -4,18 +4,9 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>1_sqB3KdpJ4cBn-e9FoUB4Mw.ico</ApplicationIcon>
+    <ApplicationIcon>awslogo.ico</ApplicationIcon>
 	<AssemblyName>AWS Sign</AssemblyName>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="1_sqB3KdpJ4cBn-e9FoUB4Mw.ico" />
-    <None Remove="CredentialsTemplate" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="1_sqB3KdpJ4cBn-e9FoUB4Mw.ico" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
@@ -24,10 +15,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="1_sqB3KdpJ4cBn-e9FoUB4Mw.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <None Update="add-codeartifact-npm-source.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="update-session-credentials.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

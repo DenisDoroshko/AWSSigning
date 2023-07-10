@@ -1,80 +1,21 @@
 ﻿using System.Diagnostics;
-using Newtonsoft.Json;
-using System.IO;
 using Microsoft.Extensions.Configuration;
 
 namespace AWSSigning
 {
-    public class Credentials
-    {
-        public string AccessKeyId { get; set; }
-
-        public string SecretAccessKey { get; set; }
-
-        public string SessionToken { get; set; }
-
-        public string Expiration { get; set; }
-    }
-    public class AWS
-    {
-        public Credentials Credentials { get; set; }
-    }
-
     public static class SignInManager
     {
         public static (bool Result, string ErrorMessage) SignIn(string token)
         {
-            // setup AWS session token
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             var appSettings = new AppSettings();
             configuration.Bind(appSettings);
-            Process pProcess = new Process();
-            pProcess.StartInfo.FileName = "CMD.exe";
-            pProcess.StartInfo.Arguments = $"/C aws sts get-session-token --profile {appSettings.ConstantProfileName} --serial-number {appSettings.MfaArn} --token-code {token}";
-            pProcess.StartInfo.UseShellExecute = false;
-            pProcess.StartInfo.RedirectStandardOutput = true;
-            pProcess.StartInfo.RedirectStandardError = true;
-            pProcess.Start();
-            string strOutput = pProcess.StandardOutput.ReadToEnd();
-            var aws = JsonConvert.DeserializeObject<AWS>(strOutput);
-            if (aws is null)
-            {
-                return (false, pProcess.StandardError.ReadToEnd());
-            }
-            var lines = File.ReadAllLines(appSettings.CredentialsPath);
-            var accessKeyId = $"aws_access_key_id = {aws.Credentials.AccessKeyId}";
-            var secretAccessKey = $"aws_secret_access_key = {aws.Credentials.SecretAccessKey}";
-            var sessionToken = $"aws_session_token = {aws.Credentials.SessionToken}";
-            using (var sw = new StreamWriter(appSettings.CredentialsPath, false, System.Text.Encoding.Default))
-            {
-                for (var i = 0; i < lines.Length; i++)
-                {
-                    var line = i + 1;
-                    if (appSettings.AwsAccessKeyIdLine == line)
-                    {
-                        sw.WriteLine(accessKeyId);
-                    }
-                    else if (appSettings.AwsSecretAccessKeyLine == line)
-                    {
-                        sw.WriteLine(secretAccessKey);
-                    }
-                    else if (appSettings.AwsSessionTokenLine == line)
-                    {
-                        sw.WriteLine(sessionToken);
-                    }
-                    else
-                    {
-                        sw.WriteLine(lines[i]);
-                    }
-                }
-            }
 
-            if (appSettings.IsSetupCodeArtifactNugetSource)
+            if (appSettings.IsSetupSessionCredentials) 
             {
-                // add nuget source for axs codeartifact
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = @"powershell.exe";
-                startInfo.Arguments = @"& './add-codeartifact-nuget-source.ps1'";
+                startInfo.Arguments = $"./update-session-credentials.ps1 {appSettings.MfaArn} {token} {appSettings.ConstantProfileName} {appSettings.ProfileName}";
                 startInfo.RedirectStandardOutput = true;
                 startInfo.RedirectStandardError = true;
                 startInfo.UseShellExecute = false;
@@ -84,7 +25,50 @@ namespace AWSSigning
                 process.Start();
                 var errorOutput = process.StandardError.ReadToEnd();
 
-                return (errorOutput.Length == 0, errorOutput);
+                if (errorOutput.Length != 0) 
+                {
+                    return (false, $"Failed session credentials setup {errorOutput}");
+                }
+            }
+
+            if (appSettings.IsSetupCodeArtifactNugetSource)
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"powershell.exe";
+                startInfo.Arguments = $"./add-codeartifact-nuget-source.ps1 {appSettings.Domain} {appSettings.DomainOwner}  {appSettings.Region} {appSettings.NugetSourceName}";
+                startInfo.RedirectStandardOutput = true;
+                startInfo.RedirectStandardError = true;
+                startInfo.UseShellExecute = false;
+                startInfo.CreateNoWindow = true;
+                Process process = new Process();
+                process.StartInfo = startInfo;
+                process.Start();
+                var errorOutput = process.StandardError.ReadToEnd();
+
+                if (errorOutput.Length != 0) 
+                {
+                    return (false, $"Failed nuget setup {errorOutput}");
+                }
+            }
+
+            if (appSettings.IsSetupNpm)
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"powershell.exe";
+                startInfo.Arguments = $"./add-codeartifact-npm-source.ps1 {appSettings.Domain} {appSettings.DomainOwner} {appSettings.ProfileName}";
+                startInfo.RedirectStandardOutput = true;
+                startInfo.RedirectStandardError = true;
+                startInfo.UseShellExecute = false;
+                startInfo.CreateNoWindow = true;
+                Process process = new Process();
+                process.StartInfo = startInfo;
+                process.Start();
+                var errorOutput = process.StandardError.ReadToEnd();
+
+                if (errorOutput.Length != 0) 
+                {
+                    return (false, $"Failed npm setup {errorOutput}");
+                }
             }
 
             return (true, null);
